@@ -1,0 +1,74 @@
+# What this repository actually is: a couple of scripts, no package, no tests.
+#
+# The previous workflow was copied from a project that has all three. It ran
+# `uv sync --dev` with no pyproject.toml, then `mypy --strict .` and
+# `pytest --cov=src` against a src/ directory that does not exist, and failed on
+# the first step every time.
+#
+# This checks what is really here: the dependencies install, every script
+# imports, and the style rules hold.
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Install, import and lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install CPU-only torch (the runner has no GPU)
+        run: pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install ruff
+
+      - name: Every script compiles
+        run: python -m compileall -q .
+
+      - name: Every script imports
+        # Catches a missing dependency or a broken import, which is the failure
+        # these scripts actually have. Model weights are not downloaded here.
+        run: |
+          for f in *.py; do
+            [ -e "$f" ] || continue
+            echo "--- $f"
+            python -c "import ast,sys; ast.parse(open('$f',encoding='utf-8').read())"
+          done
+
+      - name: Lint
+        run: ruff check .
+
+      - name: Format check
+        run: ruff format --check .
+
+  security:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
