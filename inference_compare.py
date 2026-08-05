@@ -122,7 +122,7 @@ def main() -> None:
                     "latency": latency,
                 }
             )
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001 - boundary handler: the error is reported, not swallowed
             CONSOLE.print(f"[bold red]Error with {model_path.name}: {e}[/bold red]")
 
     # Output comparison table

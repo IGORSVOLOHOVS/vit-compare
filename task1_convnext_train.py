@@ -228,7 +228,7 @@ def main() -> None:
 
         CONSOLE.print(table)
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001 - boundary handler: the error is reported, not swallowed
         CONSOLE.print(f"[bold red]An error occurred: {e}[/bold red]")
 
 

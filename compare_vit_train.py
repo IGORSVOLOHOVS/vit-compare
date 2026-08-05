@@ -178,7 +178,7 @@ def main() -> None:
 
             metrics = trainer.train_one_epoch(model_name, train_loader)
             all_metrics.append(metrics)
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001 - boundary handler: the error is reported, not swallowed
             CONSOLE.print(f"[bold red]Failed to train {model_name}: {e}[/bold red]")
 
     # Report results
