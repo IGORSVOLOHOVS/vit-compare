@@ -25,7 +25,7 @@ class ConvNextInference:
         """Initialize with a saved model path and device."""
         self.device = device
         CONSOLE.print(f"[bold blue]Loading model from {model_path}...[/bold blue]")
-        
+
         self.processor = AutoImageProcessor.from_pretrained("facebook/convnext-base-224-22k-1k")
         self.model = AutoModelForImageClassification.from_pretrained(model_path)
         self.model.to(self.device)
@@ -38,21 +38,17 @@ class ConvNextInference:
             [
                 transforms.Resize((size, size)),
                 transforms.ToTensor(),
-                transforms.Normalize(
-                    mean=self.processor.image_mean, std=self.processor.image_std
-                ),
+                transforms.Normalize(mean=self.processor.image_mean, std=self.processor.image_std),
             ]
         )
-        test_set = datasets.CIFAR10(
-            root="./data", train=False, download=True, transform=transform
-        )
+        test_set = datasets.CIFAR10(root="./data", train=False, download=True, transform=transform)
         return DataLoader(test_set, batch_size=batch_size, shuffle=False)
 
     def measure_performance(self, dataloader: DataLoader[Any]) -> dict[str, float]:
         """Measure inference time and accuracy."""
         correct = 0
         total = 0
-        
+
         # Warm-up (standard for inference benchmarks)
         CONSOLE.print("[yellow]Warming up GPU...[/yellow]")
         with torch.no_grad():
@@ -61,20 +57,19 @@ class ConvNextInference:
                 _ = self.model(dummy_input)
 
         start_time = time.perf_counter()
-        
-        with torch.no_grad():
-            with Progress() as progress:
-                task = progress.add_task("[cyan]Running inference...", total=len(dataloader))
-                for images, labels in dataloader:
-                    images, labels = images.to(self.device), labels.to(self.device)
-                    outputs = self.model(images).logits
-                    _, predicted = torch.max(outputs.data, 1)
-                    total += labels.size(0)
-                    correct += (predicted == labels).sum().item()
-                    progress.update(task, advance=1)
+
+        with torch.no_grad(), Progress() as progress:
+            task = progress.add_task("[cyan]Running inference...", total=len(dataloader))
+            for images, labels in dataloader:
+                images, labels = images.to(self.device), labels.to(self.device)
+                outputs = self.model(images).logits
+                _, predicted = torch.max(outputs.data, 1)
+                total += labels.size(0)
+                correct += (predicted == labels).sum().item()
+                progress.update(task, advance=1)
 
         end_time = time.perf_counter()
-        
+
         duration = end_time - start_time
         accuracy = 100 * correct / total
         throughput = total / duration
@@ -83,7 +78,7 @@ class ConvNextInference:
             "duration": duration,
             "accuracy": accuracy,
             "throughput": throughput,
-            "total_images": float(total)
+            "total_images": float(total),
         }
 
 
@@ -91,14 +86,16 @@ def main() -> None:
     """Main execution point for ConvNext inference."""
     model_path = "./models/convnext_cifar10"
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    
+
     if not Path(model_path).exists():
-        CONSOLE.print(f"[bold red]Model path {model_path} does not exist. Please train the model first.[/bold red]")
+        CONSOLE.print(
+            f"[bold red]Model path {model_path} does not exist. Please train the model first.[/bold red]"
+        )
         return
 
     inferencer = ConvNextInference(model_path, device)
     test_loader = inferencer.get_test_loader(batch_size=32)
-    
+
     results = inferencer.measure_performance(test_loader)
 
     # Report results

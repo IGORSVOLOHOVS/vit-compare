@@ -1,0 +1,6 @@
+line-length = 100
+# Vendored tooling and generated output, not this project's code.
+extend-exclude = [".agent", ".vscode"]
+
+[lint.per-file-ignores]
+"scripts/*" = ["S404", "S603", "S607", "S310", "PLR0912", "C901", "ANN", "D"]

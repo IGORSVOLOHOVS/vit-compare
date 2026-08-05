@@ -6,10 +6,10 @@ from pathlib import Path
 from typing import Any
 
 import torch
-import torch.nn as nn
 from rich.console import Console
 from rich.table import Table
 from rich.traceback import install
+from torch import nn
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms  # type: ignore[import-untyped]
 from transformers import (
@@ -61,15 +61,11 @@ class VisionDataPipeline:
             [
                 transforms.Resize((size, size)),
                 transforms.ToTensor(),
-                transforms.Normalize(
-                    mean=self.processor.image_mean, std=self.processor.image_std
-                ),
+                transforms.Normalize(mean=self.processor.image_mean, std=self.processor.image_std),
             ]
         )
 
-        train_set = datasets.CIFAR10(
-            root="./data", train=True, download=True, transform=transform
-        )
+        train_set = datasets.CIFAR10(root="./data", train=True, download=True, transform=transform)
         # We split the CIFAR test set into val and test for the exercise
         full_test_set = datasets.CIFAR10(
             root="./data", train=False, download=True, transform=transform
@@ -78,9 +74,7 @@ class VisionDataPipeline:
         # Split test set 50/50 for val/test
         val_size = len(full_test_set) // 2
         test_size = len(full_test_set) - val_size
-        val_set, test_set = torch.utils.data.random_split(
-            full_test_set, [val_size, test_size]
-        )
+        val_set, test_set = torch.utils.data.random_split(full_test_set, [val_size, test_size])
 
         train_loader = DataLoader(
             train_set, batch_size=self.batch_size, shuffle=True, num_workers=2
@@ -160,9 +154,7 @@ class PerfTrainer:
         model.save_pretrained(save_path)
         CONSOLE.print(f"[green]Model saved to {save_path}[/green]")
 
-        return TrainingMetrics(
-            model_name=model_name, duration_seconds=duration, avg_loss=avg_loss
-        )
+        return TrainingMetrics(model_name=model_name, duration_seconds=duration, avg_loss=avg_loss)
 
 
 def main() -> None:

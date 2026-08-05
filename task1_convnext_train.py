@@ -6,11 +6,11 @@ from pathlib import Path
 from typing import Any
 
 import torch
-import torch.nn as nn
 from rich.console import Console
 from rich.progress import Progress
 from rich.table import Table
 from rich.traceback import install
+from torch import nn
 from torch.utils.data import DataLoader, random_split
 from torchvision import datasets, transforms  # type: ignore[import-untyped]
 from transformers import (
@@ -64,16 +64,12 @@ class ConvNextPipeline:
             [
                 transforms.Resize((size, size)),
                 transforms.ToTensor(),
-                transforms.Normalize(
-                    mean=self.processor.image_mean, std=self.processor.image_std
-                ),
+                transforms.Normalize(mean=self.processor.image_mean, std=self.processor.image_std),
             ]
         )
 
         CONSOLE.print("[yellow]Downloading CIFAR-10 dataset...[/yellow]")
-        train_set = datasets.CIFAR10(
-            root="./data", train=True, download=True, transform=transform
-        )
+        train_set = datasets.CIFAR10(root="./data", train=True, download=True, transform=transform)
         full_test_set = datasets.CIFAR10(
             root="./data", train=False, download=True, transform=transform
         )
@@ -91,9 +87,7 @@ class ConvNextPipeline:
         val_loader = DataLoader(val_set, batch_size=self.batch_size, shuffle=False)
         test_loader = DataLoader(test_set, batch_size=self.batch_size, shuffle=False)
 
-        CONSOLE.print(
-            f"Dataset sizes: Train={len(train_set)}, Val={val_size}, Test={test_size}"
-        )
+        CONSOLE.print(f"Dataset sizes: Train={len(train_set)}, Val={val_size}, Test={test_size}")
         return train_loader, val_loader, test_loader
 
 
@@ -138,7 +132,7 @@ class ConvNextTrainer:
 
         optimizer = torch.optim.AdamW(model.parameters(), lr=5e-5)
         criterion = nn.CrossEntropyLoss()
-        
+
         # Use Mixed Precision to save memory
         scaler = torch.amp.GradScaler(enabled=(self.device.type == "cuda"))
 
@@ -149,23 +143,25 @@ class ConvNextTrainer:
         model.train()
         with Progress() as progress:
             task = progress.add_task("[cyan]Training epoch 1...", total=num_batches)
-            
+
             for i, (images, labels) in enumerate(train_loader):
                 images, labels = images.to(self.device), labels.to(self.device)
 
                 optimizer.zero_grad()
-                
-                with torch.amp.autocast(device_type=self.device.type, enabled=(self.device.type == "cuda")):
+
+                with torch.amp.autocast(
+                    device_type=self.device.type, enabled=(self.device.type == "cuda")
+                ):
                     outputs = model(images).logits
                     loss = criterion(outputs, labels)
-                
+
                 scaler.scale(loss).backward()
                 scaler.step(optimizer)
                 scaler.update()
 
                 total_loss += loss.item()
                 progress.update(task, advance=1, description=f"Loss: {loss.item():.4f}")
-                
+
                 # Explicit logging for background monitoring
                 if i % 100 == 0:
                     print(f"Batch {i}/{num_batches} - Loss: {loss.item():.4f}")
@@ -185,7 +181,7 @@ class ConvNextTrainer:
                 _, predicted = torch.max(outputs.data, 1)
                 total += labels.size(0)
                 correct += (predicted == labels).sum().item()
-        
+
         accuracy = 100 * correct / total
 
         # Save model
@@ -205,11 +201,11 @@ class ConvNextTrainer:
 def main() -> None:
     """Main execution point for ConvNext fine-tuning."""
     model_name = "facebook/convnext-base-224-22k-1k"
-    
+
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if device.type == "cuda":
         torch.cuda.empty_cache()
-    
+
     CONSOLE.print(f"Executing on device: [bold cyan]{device}[/bold cyan]")
 
     try:
