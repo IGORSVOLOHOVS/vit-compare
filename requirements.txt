@@ -1,0 +1,11 @@
+# Everything the scripts here import. This file was empty until 2026-08-07,
+# which meant `pip install -r requirements.txt` in CI installed nothing and the
+# workflow stayed green while the scripts could not run on a fresh machine.
+#
+# Unpinned on purpose: the workflow installs CPU-only torch from PyTorch's own
+# index before this file is read, and pinning here would fight that.
+torch
+torchvision
+transformers
+pillow
+rich

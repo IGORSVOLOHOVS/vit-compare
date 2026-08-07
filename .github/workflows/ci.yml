@@ -45,15 +45,18 @@ jobs:
       - name: Every script compiles
         run: python -m compileall -q .
 
-      - name: Every script imports
-        # Catches a missing dependency or a broken import, which is the failure
-        # these scripts actually have. Model weights are not downloaded here.
-        run: |
-          for f in *.py; do
-            [ -e "$f" ] || continue
-            echo "--- $f"
-            python -c "import ast,sys; ast.parse(open('$f',encoding='utf-8').read())"
-          done
+      # This step used to be named the same and run `ast.parse` on each file -
+      # a syntax check, and the same one `compileall` had just done. It could
+      # not catch a missing dependency, which is what its comment claimed it was
+      # for, and it did not: requirements.txt was empty while the scripts
+      # imported transformers, pillow, rich and (here) scikit-learn.
+      #
+      # scripts/check_imports.py reads the imports out of the source and
+      # resolves each one with importlib.util.find_spec, which finds a module
+      # without executing it - so a missing dependency fails, and no model
+      # weights are downloaded.
+      - name: Every import resolves
+        run: python scripts/check_imports.py
 
       - name: Lint
         run: ruff check .
