@@ -11,6 +11,8 @@ from rich.progress import Progress
 from rich.table import Table
 from rich.traceback import install
 from torch import nn
+from torch.amp.autocast_mode import autocast
+from torch.amp.grad_scaler import GradScaler
 from torch.utils.data import DataLoader, random_split
 from torchvision import datasets, transforms  # type: ignore[import-untyped]
 from transformers import (
@@ -134,7 +136,7 @@ class ConvNextTrainer:
         criterion = nn.CrossEntropyLoss()
 
         # Use Mixed Precision to save memory
-        scaler = torch.amp.GradScaler(enabled=(self.device.type == "cuda"))
+        scaler = GradScaler(enabled=(self.device.type == "cuda"))
 
         start_time = time.perf_counter()
         total_loss = 0.0
@@ -149,9 +151,7 @@ class ConvNextTrainer:
 
                 optimizer.zero_grad()
 
-                with torch.amp.autocast(
-                    device_type=self.device.type, enabled=(self.device.type == "cuda")
-                ):
+                with autocast(device_type=self.device.type, enabled=(self.device.type == "cuda")):
                     outputs = model(images).logits
                     loss = criterion(outputs, labels)
 
