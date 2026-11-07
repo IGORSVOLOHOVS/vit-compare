@@ -1,24 +1,29 @@
-# Python
+# Built, fetched and scratch - only ever at the root
+/dist/
+/build/
+/out/
+/tmp/
+/.venv/
+/.coverage
+
+# What the tools cache, wherever they run
 __pycache__/
-*.py[cod]
-*$py.class
-.venv
-venv/
-ENV/
-env/
-.env
-
-# Data & Models
-data/
-models/
-
-# Logs & Cache
-*.log
+*.pyc
+.pytest_cache/
 .mypy_cache/
 .ruff_cache/
-.pytest_cache/
 
-# OS
-.DS_Store
-Thumbs.db
-*.zip
+# Prompt text, and one person's Claude Code settings
+.claude/logs/
+.claude/settings.local.json
+
+# No .env line: .claude/.env holds the keys and is committed on purpose (R-02).
+# DEVIATION from the line above, decided by the repository owner: no key is
+# ever committed, so .claude/.env is ignored here. Rule 4 of CLAUDE.md is
+# where that reversal is written down.
+.claude/.env
+
+# What this repository writes, kept from before the lab
+.coverage
+*.egg-info/
+.env
