@@ -2,13 +2,14 @@
 
 import time
 from pathlib import Path
+from typing import Any
 
 import torch
 import torch.nn.functional as F
 from PIL import Image, ImageDraw, ImageFont
 from rich.console import Console
 from rich.table import Table
-from torchvision import datasets
+from torchvision import datasets  # type: ignore[import-untyped]
 from transformers import AutoImageProcessor, AutoModelForImageClassification
 
 CONSOLE = Console()
@@ -24,6 +25,7 @@ def create_inference_visual(
     draw = ImageDraw.Draw(image)
 
     # Try to use a nice font, fallback to default
+    font: ImageFont.FreeTypeFont | ImageFont.ImageFont
     try:
         font = ImageFont.truetype("arial.ttf", 24)
     except OSError:
@@ -53,7 +55,7 @@ def run_inference(
     }
 
     orig_name = model_name_map.get(model_path.name, "google/vit-base-patch16-224-in21k")
-    processor = AutoImageProcessor.from_pretrained(orig_name)
+    processor = AutoImageProcessor.from_pretrained(orig_name)  # type: ignore[no-untyped-call]
     model = AutoModelForImageClassification.from_pretrained(model_path).to(device)
     model.eval()
 
@@ -79,7 +81,7 @@ def run_inference(
     probs = F.softmax(logits, dim=-1)
     conf, idx = torch.max(probs, dim=-1)
 
-    return CLASSES[idx.item()], conf.item(), avg_latency
+    return CLASSES[int(idx.item())], conf.item(), avg_latency
 
 
 def main() -> None:
@@ -100,7 +102,7 @@ def main() -> None:
     assets_dir = Path("./docs/assets")
     assets_dir.mkdir(parents=True, exist_ok=True)
 
-    results = []
+    results: list[dict[str, Any]] = []
 
     for model_path in models_dir.iterdir():
         if not model_path.is_dir():

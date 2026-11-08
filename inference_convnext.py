@@ -26,7 +26,9 @@ class ConvNextInference:
         self.device = device
         CONSOLE.print(f"[bold blue]Loading model from {model_path}...[/bold blue]")
 
-        self.processor = AutoImageProcessor.from_pretrained("facebook/convnext-base-224-22k-1k")
+        self.processor = AutoImageProcessor.from_pretrained(  # type: ignore[no-untyped-call]
+            "facebook/convnext-base-224-22k-1k"
+        )
         self.model = AutoModelForImageClassification.from_pretrained(model_path)
         self.model.to(self.device)
         self.model.eval()
@@ -89,7 +91,8 @@ def main() -> None:
 
     if not Path(model_path).exists():
         CONSOLE.print(
-            f"[bold red]Model path {model_path} does not exist. Please train the model first.[/bold red]"
+            f"[bold red]Model path {model_path} does not exist. "
+            "Please train the model first.[/bold red]"
         )
         return
 
