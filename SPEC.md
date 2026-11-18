@@ -4,6 +4,28 @@ Reverse-engineered from the code at commit `2f1e8f3` (2026-11-08) on 2026-11-18.
 what the code does, not what it was meant to do; where the two differ, the difference is
 listed under 3.6 or 9. Documentation hub: [`docs/README.md`](docs/README.md).
 
+<!-- jira-sync:start -->
+Jira: KAN-86
+
+## Tasks
+
+This list is one ticket in Jira project KAN, [KAN-86](https://igorsvolohovs.atlassian.net/browse/KAN-86). Each line is a checkbox there: tick it in Jira and the sync ticks it here; add a checkbox there and it is appended here. Done items are the features described in section 3; open items are what the project declares but the code does not do yet.
+
+- [x] ViT comparison (`compare_vit_train.py`) (section 3.1) <!-- spec-vit-comparison-comparevittrain-py -->
+- [x] ConvNext training (`task1_convnext_train.py`) (section 3.2) <!-- spec-convnext-training-task1convnexttrain-py -->
+- [x] Inference comparison (`inference_compare.py`) (section 3.3) <!-- spec-inference-comparison-inferencecompare-py -->
+- [x] ConvNext inference (`inference_convnext.py`) (section 3.4) <!-- spec-convnext-inference-inferenceconvnext-py -->
+- [x] Common (section 3.5) <!-- spec-common -->
+- [ ] Every script exits 0, also when a model fails (declared, not implemented) <!-- spec-every-script-exits-0-also-when-a-model-fails -->
+- [ ] `data/` and `models/` are gitignored (declared, not implemented) <!-- spec-data-and-models-are-gitignored -->
+- [ ] Classes `DataPipeline`, `ModelManager`, `Trainer` (declared, not implemented) <!-- spec-classes-datapipeline-modelmanager-trainer -->
+- [ ] Train each model "on GPU" (declared, not implemented) <!-- spec-train-each-model-on-gpu -->
+- [ ] Train, val and test splits prepared for the comparison (declared, not implemented) <!-- spec-train-val-and-test-splits-prepared-for-the-compari -->
+- [ ] Parameter counts and a ConvNext confidence "estimated from test accuracy" (declared, not implemented) <!-- spec-parameter-counts-and-a-convnext-confidence-estimat -->
+- [ ] Manual tests (declared, not implemented) <!-- spec-manual-tests -->
+
+<!-- jira-sync:end -->
+
 ## 1. Purpose and scope
 
 **In scope.** Four standalone Python scripts that fine-tune pretrained image classifiers
