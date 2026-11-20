@@ -314,3 +314,121 @@ are measurements, not requirements.
    is unknown; what R-37 and R-41 demand is unknown.
 10. Whether `.agent/` and `.vscode/` (C++, CMake and generic Python agent and editor
     material from the first commit) are meant to stay in this Python-only repository.
+
+## Screenshots of requirements
+
+### FR-1 - The system shall fine-tune, in this order, microsoft/cvt-21,
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-2 - The system shall preprocess CIFAR-10 for each model by resizing to a square of
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-3 - The system shall load the CIFAR-10 training set into a shuffled loader of batch
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-4 - The system shall load each model with numlabels=10 and
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-5 - The system shall report the duration of the batch loop measured with
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-6 - The system shall save each fine-tuned model with savepretrained to
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-7 - When preparing or training a model raises, the system shall print
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-8 - The system shall print the table
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-9 - The system shall fine-tune facebook/convnext-base-224-22k-1k for one epoch,
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-10 - The system shall enable autocast and gradient scaling only when the device is
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-11 - The system shall split the CIFAR-10 test set into halves with a generator
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-12 - After training, the system shall compute validation accuracy in eval mode
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-13 - The system shall save the model to ./models/convnextcifar10
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-14 - The system shall print the table Task 1: ConvNext Performance Result
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-15 - On any exception in the run, the system shall print
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-16 - On CUDA the system shall empty the CUDA cache before starting
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-17 - The system shall take CIFAR-10 test image 42 and name its true class from the
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-18 - The system shall run inference for every directory directly under ./models
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-19 - The system shall load the model from the folder and the processor from the
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-20 - The system shall run one warm-up pass and ten timed passes without gradients,
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-21 - The system shall write the image, enlarged to 448 x 448 (LANCZOS), with
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-22 - When a folder fails, the system shall print Error with <folder>: <reason>,
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-23 - The system shall print the table
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-24 - When ./models/convnextcifar10 does not exist, the system shall print that it
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-25 - The system shall load the processor of facebook/convnext-base-224-22k-1k
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-26 - The system shall run the whole CIFAR-10 test set, preprocessed as in FR-2,
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-27 - The system shall make ten warm-up passes on a random 1x3x224x224 tensor, then
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-28 - The system shall print the table
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
+
+### FR-29 - Each script shall use the CUDA device when torch.cuda.isavailable() and the
+
+> Screenshot skipped: the code does not run here - the project runs on PyTorch-class libraries and trained weights, and torch is not installed here (multi-gigabyte); requirements whose code does not need torch will be revisited in a later pass.
